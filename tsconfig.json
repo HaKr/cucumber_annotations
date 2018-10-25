@@ -1,0 +1,36 @@
+{
+  	"compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "outDir": "dist/",
+    "removeComments": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "target": "es5",
+    "plugins": [
+      {
+        "name": "tslint-language-service"
+      }
+    ],
+	"declarationDir": "dist/@types",
+	"noImplicitThis": true,
+	"noUnusedLocals": true,
+	"noUnusedParameters": true
+  },
+  "compileOnSave": true,
+  "buildOnSave": true,
+  "include": [
+    "src/cucumber_annotations.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "main": "dist/cucumber_annotations.js",
+  "types": "dist/index.d.ts"
+}
