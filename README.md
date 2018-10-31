@@ -14,39 +14,72 @@ At first, the benefit is only for the developer, who gets better support in writ
 Cucumber comes with a javascript runtime, that already has added typescript support. This way, developers can write their step implementations in Typescript source code. With that, the circle looks complete and Typescript modules can be tested using Gherkin feature descriptions with typescript steps. Well, almost when we get beyond the 'Hello world' example.
 
 ### Example
+Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/master/docs/nodejs_example.md) example 
 
-```ts
-import * as Cucumber from '../support/cucumber_annotations'
 
-export class AnnotationWorld {
-   public annotation = "Not annotated yet"
+#### Setup
 
-   @Cucumber.Given( 'annotations are possible' )
-   possible() {
-      return true
-   }
+* Install [Node.js](https://nodejs.org) (6 or higher)
+* Install the following node modules with [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com/)
+  * chai@latest
+  * cucumber@latest
+  * cucumber_annotations@latest
+  * @types/chai@latest
+  * @types/cucumber@latest
+  * ts-node@latest
+  * typescript@latest
+  
 
-   @Cucumber.When( 'John Developer annotates a method with {word}' )
-   doAnnotate( word: string ) {
-      this.annotation = word
-   }
-
-}
-```
-This example shows an slightly more advanced step implementation for the following (still trivial) scenario.
+* Add the following files
 
 ```gherkin
-Scenario: Go beyond 'Hello world'
-	Given annotations are possible
-	When John Developer annotates a method with Given 
+    # features/simple_math.feature
+    Feature: Simple maths
+      In order to do maths
+      As a developer
+      I want to increment variables
+
+      Scenario: easy maths
+        Given a variable set to 1
+        When I increment the variable by 1
+        Then the variable should contain 2
+
+      Scenario Outline: much more complex stuff
+        Given a variable set to <var>
+        When I increment the variable by <increment>
+        Then the variable should contain <result>
+
+        Examples:
+          | var | increment | result |
+          | 100 |         5 |    105 |
+          |  99 |      1234 |   1333 |
+          |  12 |         5 |     17 |
 ```
 
-```js
-var annotation;
-
-Cucumber.When( 'John Developer annotates a method with {word}',
-    function( word ) {
-        annotation = word;
-    }
-}
+```typescript
+    // features/steps/simple_math_world.js
+	import { Given, When, Then } from "cucumber_annotations"
+	import { expect } from 'chai'
+	
+	export class SimpleMathWorld {
+	  private result = 0
+	  
+	  @Given( 'a variable set to {int}' )
+	  setTo( n: number ){ this.result = n  }
+	  
+	  @When('I increment the variable by {int}')
+	  incrementBy(n: number) { this.result += n  }
+	  
+	  @Then('the variable should contain {int}')
+	  shouldBe( n: number ) { expect(this.result).to.eql(n) }
+	}
 ```
+
+	/*
+	 * The export for the SimpleMathWorld class is required, as the Typescript compiler otherwise would 
+	 * complain that it is: "declared but never used."
+	 */
+  
+	
+* Run `./node_modules/.bin/cucumber-js --require-module ts-node/register --require \"features/steps/**/*.ts\"`
+

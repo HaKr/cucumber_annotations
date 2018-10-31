@@ -1,15 +1,18 @@
 {
   "author": "Harry de Kroon",
   "name": "cucumber_annotations",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Typescript annotations for Cucumber",
+  "main": "dist/index.js",
+  "types": "dist/@types",
   "keywords": [
     "BDD", "Cucumber", "Typescript", "annotations"
   ],
   "license": "MIT",
   "repository": "https://github.com/hakr/cucumber_annotations",
   "scripts": {
-    "test": "node_modules/.bin/cucumber-js --require-module ts-node/register --require \"test/scripts/**/*.ts\" \"test/features/**/*.feature\""
+    "build": "node_modules/.bin/tsc",
+    "test": "node_modules/.bin/cucumber-js --require-module ts-node/register --require \"features/scripts/**/*.ts\""
   },
   "dependencies": {
     "@types/chai": "^4.1.6",
