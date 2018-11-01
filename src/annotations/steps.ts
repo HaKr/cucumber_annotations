@@ -5,7 +5,7 @@ import * as Options from './options'
 import { WorldsMap } from '../worlds/annotated_world'
 
 export type Transformer = ( this: any, ...arg: string[] ) => any
-export type Pattern = string | RegExp
+export type StepPattern = string | RegExp
 
 /** Use the following method as a custom type transformer */
 export function Type( name: string, regexp: RegExp, options: Options.Type = {} ) {
@@ -20,7 +20,7 @@ export function Type( name: string, regexp: RegExp, options: Options.Type = {} )
 }
 
 /** Given, When and Then are all just steps... execute below method when a scenario step matches the pattern */
-function defineStep( pattern: Pattern, options: Options.ScenarioStep = {} ) {
+function defineStep( pattern: StepPattern, options: Options.ScenarioStep = {} ) {
     return ( worldMeta: any, stepMethodName: string, descriptor: PropertyDescriptor ) => {
        CucumberJS.defineStep( pattern, options, WorldsMap.getWorldByMeta( worldMeta ).createDelegatedCucumberJSMethod( stepMethodName, descriptor.value ) )
     }

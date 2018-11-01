@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"declaration": true,
-		"emitDecoratorMetadata": false,
+		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"module": "commonjs",
+		"module": "umd",
 		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
@@ -11,7 +11,7 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"strictNullChecks": true,
-		"target": "es2015",
+		"target": "es6",
 		"plugins": [
 			{
 				"name": "tslint-language-service"
@@ -26,10 +26,6 @@
 	},
 	"compileOnSave": true,
 	"buildOnSave": true,
-	"include": [
-		"src/**/*"
-	],
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules"]
 }
