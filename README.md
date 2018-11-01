@@ -14,7 +14,8 @@ At first, the benefit is only for the developer, who gets better support in writ
 Cucumber comes with a javascript runtime, that already has added typescript support. This way, developers can write their step implementations in Typescript source code. With that, the circle looks complete and Typescript modules can be tested using Gherkin feature descriptions with typescript steps. Well, almost when we get beyond the 'Hello world' example.
 
 ### Example
-Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/master/docs/nodejs_example.md) example 
+Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/master/docs/nodejs_example.md) example.
+(with a small tweak to document two other features.) 
 
 
 #### Setup
@@ -39,11 +40,11 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
       As a developer
       I want to increment variables
 
-      Scenario: easy maths
-        Given a variable set to 1
-        When I increment the variable by 1
-        Then the variable should contain 2
-
+	  Scenario: easy maths
+	    Given a variable set to 1
+	    When I increment the variable by 1
+	    Then the variable in words would read two
+	    
       Scenario Outline: much more complex stuff
         Given a variable set to <var>
         When I increment the variable by <increment>
@@ -58,9 +59,12 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
 
 ```typescript
     // features/steps/simple_math_world.js
-	import { Given, When, Then } from "cucumber_annotations"
+	import { Given, When, Then, Type } from "cucumber_annotations"
 	import { expect } from 'chai'
 	
+	const NUMBERS_IN_WORDS = ['one', 'two', 'three']
+	const NUMBERS_IN_WORDS_PATTERN = RegExp( NUMBERS_IN_WORDS.join( '|' ) )
+
 	export class SimpleMathWorld {
 	  private result = 0
 	  
@@ -70,14 +74,20 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
 	  @When('I increment the variable by {int}')
 	  incrementBy(n: number) { this.result += n  }
 	  
+	  // custom types can be annotated too
+	  @Type( 'number_in_words', NUMBERS_IN_WORDS_PATTERN )
+	  wordToNumber( text: string ) { return NUMBERS_IN_WORDS.indexOf( text ) + 1 }
+	  
+	  // multiple annotations are allowed
 	  @Then('the variable should contain {int}')
+	  @Then('the variable in words would read {number_in_words}')
 	  shouldBe( n: number ) { expect(this.result).to.eql(n) }
 	}
 ```
 
 	/*
-	 * The export for the SimpleMathWorld class is required, as the Typescript compiler otherwise would 
-	 * complain that it is: "declared but never used."
+	 * The export for the SimpleMathWorld class is required, as the Typescript 
+	 * compiler otherwise would complain that it is: "declared but never used."
 	 */
   
 	
