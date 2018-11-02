@@ -22,13 +22,9 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
 
 * Install [Node.js](https://nodejs.org) (6 or higher)
 * Install the following node modules with [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com/)
-  * chai@latest
-  * cucumber@latest
-  * cucumber_annotations@latest
-  * @types/chai@latest
-  * @types/cucumber@latest
+  * typescript@>=2.0
   * ts-node@latest
-  * typescript@latest
+  * cucumber_annotations@latest
   
 
 * Add the following files
@@ -54,11 +50,11 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
           | var | increment | result |
           | 100 |         5 |    105 |
           |  99 |      1234 |   1333 |
-          |  12 |         5 |     17 |
+          |  12 |         5 |     18 |
 ```
 
 ```typescript
-    // features/steps/simple_math_world.js
+    // features/steps/simple_math_world.ts
 	import { Given, When, Then, Type } from "cucumber_annotations"
 	import { expect } from 'chai'
 	
@@ -89,7 +85,43 @@ Let's take the original [Cucumber](https://github.com/cucumber/cucumber-js/blob/
 	 * The export for the SimpleMathWorld class is required, as the Typescript 
 	 * compiler otherwise would complain that it is: "declared but never used."
 	 */
-  
-	
-* Run `./node_modules/.bin/cucumber-js --require-module ts-node/register --require \"features/steps/**/*.ts\"`
 
+```json
+	# tsconfig.json
+	{
+		"compilerOptions": {
+			"experimentalDecorators": true
+		}
+	}
+```
+	
+* Run: 
+
+```s
+> cucumber-js --require-module ts-node/register --require "features/scripts/**/*.ts"
+
+...........F
+
+Failures:
+
+1) Scenario: much more complex stuff # features\simple_maths.feature:20
+   √ Given a variable set to 12 # src\annotations\steps.ts:25
+   √ When I increment the variable by 5 # src\annotations\steps.ts:25
+   × Then the variable should contain 18 # src\annotations\steps.ts:25
+       AssertionError
+           + expected - actual
+
+           -17
+           +18
+
+           at SimpleMathWorld.shouldBe (cucumber_annotations\features\scripts\simple_maths_steps.ts:24:51)
+           at CustomWorld.delegate_to_SimpleMathWorld_shouldBe (cucumber_annotations\src\worlds\annotated_world.ts:83:15)
+
+4 scenarios (1 failed, 3 passed)
+12 steps (1 failed, 11 passed)
+0m00.003s
+
+```
+
+* Note that the error was introduced deliberately in the feature file. Here one can see that all Give/When/Then annotations are registered 
+	in the source of this library. Of course, any AssertionError shows the offending line in the annotated class.

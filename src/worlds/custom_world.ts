@@ -50,7 +50,7 @@ export function addHooks( constructor: MetadataConstructor )
 
 	CucumberJS.Before( CustomWorld.prototype.dispatchScenario )
 
-	CucumberJS.BeforeAll( () => CucumberJS.After( CustomWorld.prototype.dispatchScenario ) )
+	//	CucumberJS.BeforeAll( () => CucumberJS.After( CustomWorld.prototype.dispatchScenario ) )
 }
 
 CucumberJS.setWorldConstructor( CustomWorld )

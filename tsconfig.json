@@ -3,7 +3,7 @@
 		"declaration": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"module": "umd",
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,

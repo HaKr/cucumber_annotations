@@ -16,7 +16,6 @@ export class Metadata implements ScenarioMetadata
 
 	constructor( private readonly customWorld: CustomWorld, private readonly scenario: CucumberJS.HookScenarioResult )
 	{
-		console.log( 'Scenario result=', scenario.result )
 		this.result = scenario.result || INITIAL_RESULT
 	}
 

@@ -6,7 +6,7 @@ Feature: Simple maths
   Scenario: easy maths
     Given a variable set to 1
     When I increment the variable by 1
-    Then the variable should contain 2
+    Then the variable in words would read two
 
   Scenario Outline: much more complex stuff
     Given a variable set to <var>
